@@ -78,12 +78,11 @@ class Blackbook::Importer::Hotmail < Blackbook::Importer::PageScraper
     page = agent.get('PrintShell.aspx?type=contact')
     rows = page.search("//div[@class='ContactsPrintPane cPrintContact BorderTop']")
     rows.collect do |row|
-      name = row.search("//div[@class='cDisplayName']").first.innerText.strip
-      
+      name = row.search("//div[@class='cDisplayName']").first.inner_text.strip
       vals = {}
-      row.search("//table/tr").each do |pair|
-        key = pair.search("/td[@class='TextAlignRight Label']").first.innerText.strip
-        val = pair.search("/td[@class='Value']").first.innerText.strip
+      row.search("table/tr").each do |pair|
+        key = pair.search("td[@class='TextAlignRight Label']").first.inner_text.strip
+        val = pair.search("td[@class='Value']").first.inner_text.strip
         vals[key.to_sym] = val
       end
       vals[:name] = name

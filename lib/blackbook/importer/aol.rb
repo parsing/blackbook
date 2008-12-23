@@ -22,7 +22,7 @@ class Blackbook::Importer::Aol < Blackbook::Importer::PageScraper
   def login
     page = agent.get( 'http://webmail.aol.com/' )
 
-    form = page.forms.name('AOLLoginForm').first
+    form = page.forms.find{|form| form.name == 'AOLLoginForm'}
     form.loginId = options[:username].split('@').first # Drop the domain
     form.password = options[:password]
     page = agent.submit(form, form.buttons.first)

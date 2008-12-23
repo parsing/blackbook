@@ -46,7 +46,7 @@ class Blackbook::Importer::Gmail < Blackbook::Importer::PageScraper
     end
     
     page = agent.get('http://mail.google.com/mail/h/?v=cl&pnl=a')
-    contact_rows = page.search("input[@name='c']/../..")
+    contact_rows = page.search("//input[@name='c']/../..")
     contact_rows.collect do |row|
       columns = row/"td"
       email = columns[2].inner_html.gsub( /(\n|&nbsp;)/, '' ) # email
@@ -55,7 +55,7 @@ class Blackbook::Importer::Gmail < Blackbook::Importer::PageScraper
       unless clean_email.empty?
         columns = row/"td"
         { 
-          :name  => ( columns[1] / "b" ).inner_html, # name
+          :name  => ( columns[1] / "b" ).inner_text, # name
           :email => clean_email
         } 
       end
