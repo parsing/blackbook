@@ -12,6 +12,7 @@ class Blackbook::Importer::Hotmail < Blackbook::Importer::PageScraper
               "hotmail.de"        => "https://login.live.com/ppsecure/post.srf",
               "hotmail.fr"        => "https://login.live.com/ppsecure/post.srf",
               "hotmail.it"        => "https://login.live.com/ppsecure/post.srf",
+              "live.com"          => "https://login.live.com/ppsecure/post.srf",
               "messengeruser.com" => "https://login.live.com/ppsecure/post.srf",
               "msn.com"           => "https://msnia.login.live.com/ppsecure/post.srf",
               "passport.com"      => "https://login.live.com/ppsecure/post.srf",
