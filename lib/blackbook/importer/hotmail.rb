@@ -81,7 +81,8 @@ class Blackbook::Importer::Hotmail < Blackbook::Importer::PageScraper
     rows.collect do |row|
       vals = {}
       row.search("table/tr").each do |pair|
-        key = pair.search("td[@class='TextAlignRight Label']").first.inner_text.strip
+        key = pair.search("td[@class='TextAlignRight Label']").first.inner_text.strip rescue nil
+        next if key.nil?
         val = pair.search("td[@class='Value']").first.inner_text.strip
         vals[key.to_sym] = val
       end
