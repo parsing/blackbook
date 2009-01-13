@@ -101,6 +101,7 @@ class TestBlackbookImporterAol < Test::Unit::TestCase
       assert contacts.detect{|c| c[:name] == 'Joe User'}
       assert contacts.detect{|c| c[:email] == 'jane.user@example.com'}
       assert contacts.detect{|c| c[:name] == 'Jane User'}
+      assert contacts.detect{|c| c[:name] == 'NoEmail Dude'} == nil
     end
   end
 
