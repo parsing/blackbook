@@ -46,6 +46,13 @@ class Blackbook::Importer::Gmail < Blackbook::Importer::PageScraper
     end
     
     page = agent.get('http://mail.google.com/mail/h/?v=cl&pnl=a')
+    title = page.search("//title").inner_text
+    if title == 'Redirecting'
+      location_script = page.search("//script").inner_text
+      url = location_script.match(/location\.replace\(\"(.*)\"\)/)[1]
+      page = agent.get(url)
+    end
+    
     contact_rows = page.search("//input[@name='c']/../..")
     contact_rows.collect do |row|
       columns = row/"td"
