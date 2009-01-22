@@ -93,34 +93,6 @@ class TestBlackbookImporterGmail < Test::Unit::TestCase
     end
   end
   
-  def test_scrape_contacts_from_redirect_response
-    cookie = WWW::Mechanize::Cookie.new('GAUSR', 'mail:user@gmail.com')
-    @importer.agent.expects(:cookies).once.returns([cookie])
-
-    response = {'content-type' => 'text/html'}
-    
-    redirect_body = load_fixture('gmail_redirect_body.html').join    
-    page = WWW::Mechanize::Page.new(uri=nil, response, redirect_body, code=nil, mech=nil)
-    @importer.agent.expects(:get).with(
-      'http://mail.google.com/mail/h/?v=cl&pnl=a'
-    ).once.returns(page)
-    
-    body = load_fixture('gmail_contacts.html').join
-    page = WWW::Mechanize::Page.new(uri=nil, response, body, code=nil, mech=nil)
-    @importer.agent.expects(:get).with(
-      'http://gmail_redirecting_from_login'
-    ).once.returns(page)
-
-    assert_nothing_raised do
-      contacts = @importer.scrape_contacts
-      assert_equal 2, contacts.size
-      assert contacts.detect{|c| c[:email] == 'joe.user@example.com'}
-      assert contacts.detect{|c| c[:name] == 'Joe User'}
-      assert contacts.detect{|c| c[:email] == 'jane.user@example.com'}
-      assert contacts.detect{|c| c[:name] == 'Jane User'}
-    end    
-  end
-
   def test_scrape_contacts
     cookie = WWW::Mechanize::Cookie.new('GAUSR', 'mail:user@gmail.com')
     @importer.agent.expects(:cookies).once.returns([cookie])
