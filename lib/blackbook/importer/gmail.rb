@@ -48,11 +48,10 @@ class Blackbook::Importer::Gmail < Blackbook::Importer::PageScraper
     
     page = agent.get('http://mail.google.com/mail/h/?v=cl&pnl=a')
     title = page.search("//title").inner_text
-    tries = 0
-    while title == 'Redirecting' && tries < RETRY_THRESHOLD
-      page = get_contact_redirect_page(page)
-      title = page.search("//title").inner_text
-      tries += 1
+    if title == 'Redirecting'
+      redirect_text = page.search('//meta').first.attributes['content'].inner_text
+      url = redirect_text.match(/url='(http.*)'/i)[1]
+      page = agent.get(url)
     end
     
     contact_rows = page.search("//input[@name='c']/../..")
@@ -69,12 +68,6 @@ class Blackbook::Importer::Gmail < Blackbook::Importer::PageScraper
         } 
       end
     end.compact
-  end
-  
-  def get_contact_redirect_page(page)
-    location_script = page.search("//script").inner_text
-    url = location_script.match(/location\.replace\(\"(.*)\"\)/)[1]
-    agent.get(url)
   end
   
   Blackbook.register(:gmail, self)
