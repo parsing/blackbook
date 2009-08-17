@@ -11,6 +11,15 @@ class Blackbook
   
   attr_accessor :importers
   attr_accessor :exporters
+  @@logger = nil
+  
+  def self.logger
+    @@logger
+  end
+  
+  def self.logger=(logger)
+    @@logger = logger
+  end
   
   def self.get( *args )
     instance.get( *args )

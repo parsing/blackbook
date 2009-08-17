@@ -45,6 +45,7 @@ class Blackbook::Importer::Yahoo < Blackbook::Importer::PageScraper
     if page.body =~ /To access Yahoo! Address Book\.\.\..*Sign in./m
       raise( Blackbook::BadCredentialsError, "Must be authenticated to access contacts." )
     end
+
     form = page.forms.last
     csv = agent.submit(form, form.buttons[2]) # third button is Yahoo-format CSV
     
@@ -57,6 +58,9 @@ class Blackbook::Importer::Yahoo < Blackbook::Importer::PageScraper
         :email => (row[4] || "#{row[7]}@yahoo.com") # email is a field in the data, but will be blank for Yahoo users so we create their email address    
       } 
     end
+    rescue Exception => e
+      Blackbook.logger.error "Problem scraping Yahoo Contacts. Last page accessed was:\n#{page.body}" if Blackbook.logger
+      raise e
   end
   
   Blackbook.register(:yahoo, self)
