@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 require File.join( File.dirname(__FILE__), '../../lib/blackbook.rb' )
+require File.join( File.dirname(__FILE__), '../lib/open_in_browser.rb' ) # use page.open_in_browser to see scraped page in browser
+
 require 'optparse'
 
 options = {}
